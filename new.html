@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-image: url('background1.jpg'); /* Set your background image here */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slider::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); 
+            z-index: 1; 
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+            position: relative;
+            z-index: 2; 
+        }
+
+        .slide {
+            min-width: 33.33%; 
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1000px; 
+            opacity: 0.8; 
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            border-radius: 10px;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .slide.active img {
+            transform: scale(1.1);
+        }
+
+        .slide:not(.active) img {
+            opacity: 0.5;
+            transform: scale(0.9) rotateY(12deg); 
+        }
+
+        .navigation {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 20px;
+            z-index: 3;  
+        }
+
+        .navigation button {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .navigation button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .slide-info {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: white;
+            z-index: 4; 
+        }
+
+        .slide-info h2 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .slide-info p {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider">
+        <div class="slides">
+            <div class="slide active">
+                <img src="image1.jpg" alt="Image 1">
+                <div class="slide-info">
+                    <h2>Machu Picchu</h2>
+                    <p>Peru</p>
+                    <p>Adventure is never far away</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="image2.jpg" alt="Image 2">
+                <div class="slide-info">
+                    <h2>Wilson Hills</h2>
+                    <p>enjoys a cooler and less humid climate</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="image3.jpg" alt="Image 3">
+                <div class="slide-info">
+                    <h2>Karakoram Highway</h2>
+                    <p>pathway to expeditions for almost all peaks</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="image4.jpg" alt="Image 4">
+                <div class="slide-info">
+                    <h2>Gulmarg Gondola</h2>
+                    <p>It boasts of the world's highest golf-course</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="image5.jpg" alt="Image 5">
+                <div class="slide-info">
+                    <h2>Munnar</h2>
+                    <p>Kashmir of South India</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="image6.jpg" alt="Image 6">
+                <div class="slide-info">
+                    <h2>Image 6 Title</h2>
+                    <p>Image 6 Description</p>
+                </div>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="prev">&#10094;</button>
+            <button class="next">&#10095;</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelector('.slides');
+        const slide = document.querySelectorAll('.slide');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+
+        let index = 0;
+
+        function showSlide(index) {
+            const totalSlides = slide.length;
+
+            slide.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+
+            if (index >= totalSlides) {
+                index = 0;
+            } else if (index < 0) {
+                index = totalSlides - 1;
+            }
+
+            const offset = -index * (100 / slide.length);
+            slides.style.transform = `translateX(${offset}%)`;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            index--;
+            showSlide(index);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            index++;
+            showSlide(index);
+        });
+        showSlide(index);
+    </script>
+</body>
+</html>
